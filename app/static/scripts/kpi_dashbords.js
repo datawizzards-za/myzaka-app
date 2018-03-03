@@ -1,50 +1,50 @@
 $(document).ready(function () {
     // Map Code
-    $.getJSON( "../../static/data/map_data.json", function( data ) {
-			var paper = Raphael(350, 160, 2000, 2000);
-			var elementSet = paper.set();
-			var attrs = {"type":"path","stroke":"none"};
-			var sa = {}
+    $.getJSON("../../static/data/map_data.json", function (data) {
+        var paper = Raphael(350, 160, 2000, 2000);
+        var elementSet = paper.set();
+        var attrs = { "type": "path", "stroke": "none" };
+        var sa = {}
 
-			$.each(data, function(i, province) {
-				attrs.fill = province.color;
-			    sa[province.name] = paper.path(province.path).attr(attrs);
-                sa[province.name].name = province.name;
-			});
+        $.each(data, function (i, province) {
+            attrs.fill = province.color;
+            sa[province.name] = paper.path(province.path).attr(attrs);
+            sa[province.name].name = province.name;
+        });
 
 
-			$.each(sa, function(i, st) {
-				st.node.onclick = function() {
-					paper.clear();
-                    var filename = "../../static/data/" + st.name.toLowerCase().replace(" ", "") + ".json";
-                    var map_shapes = {
-                        "Gauteng": {"transform": "s6,6 0,0", "paper": Raphael(-2650, -700, 4000, 2000)},
-                        "Limpopo": {"transform": "s3,3 0,0", "paper": Raphael(-1100, 200, 3000, 2000)},
-                        "Free State": {"transform": "s3,3 0,0", "paper": Raphael(-770, -500, 3000, 2000)},
-                        "Northern Cape": {"transform": "s1.5,1.5 0,0", "paper": Raphael(420, -30, 3000, 2000)},
-                        "Mpumalanga": {"transform": "s3.6,3.6 0,0", "paper": Raphael(-1650, -180, 3400, 2000)},
-                        "Western Cape": {"transform": "s2.5,2.5 0,0", "paper": Raphael(230, -850, 3000, 2000)},
-                        "KwaZulu Natal": {"transform": "s2.8,2.8 0,0", "paper": Raphael(-1200, -480, 3000, 2000)},
-                        "Eastern Cape": {"tranform": "s2,2 0,0", "paper": Raphael(300, 0, 3000, 2000)},
-                        "North West": {"transform": "s3,3 0,0", "paper": Raphael(-550, -180, 3000, 2000)}
-                    }
+        $.each(sa, function (i, st) {
+            st.node.onclick = function () {
+                paper.clear();
+                var filename = "../../static/data/" + st.name.toLowerCase().replace(" ", "") + ".json";
+                var map_shapes = {
+                    "Gauteng": { "transform": "s6,6 0,0", "paper": Raphael(-2650, -700, 4000, 2000) },
+                    "Limpopo": { "transform": "s3,3 0,0", "paper": Raphael(-1100, 200, 3000, 2000) },
+                    "Free State": { "transform": "s3,3 0,0", "paper": Raphael(-770, -500, 3000, 2000) },
+                    "Northern Cape": { "transform": "s1.5,1.5 0,0", "paper": Raphael(420, -30, 3000, 2000) },
+                    "Mpumalanga": { "transform": "s3.6,3.6 0,0", "paper": Raphael(-1650, -180, 3400, 2000) },
+                    "Western Cape": { "transform": "s2.5,2.5 0,0", "paper": Raphael(230, -850, 3000, 2000) },
+                    "KwaZulu Natal": { "transform": "s2.8,2.8 0,0", "paper": Raphael(-1200, -480, 3000, 2000) },
+                    "Eastern Cape": { "tranform": "s2,2 0,0", "paper": Raphael(300, 0, 3000, 2000) },
+                    "North West": { "transform": "s3,3 0,0", "paper": Raphael(-550, -180, 3000, 2000) }
+                }
 
-					var attrs = {"type":"path","stroke":"none"};
-					var sa = {};
-					var provinces = map_shapes[st.name].paper.set();
+                var attrs = { "type": "path", "stroke": "none" };
+                var sa = {};
+                var provinces = map_shapes[st.name].paper.set();
 
-                    $.getJSON( filename, function( data ) {
-                            $.each(data, function(i, munic) {
-                                attrs.fill = munic.color;
-                                sa[munic.name] = map_shapes[munic.province].paper.path(munic.path).attr(attrs);
-                                provinces.push(sa[munic.name]);
-                                sa[munic.name].name = munic.name;
-                                sa[munic.name].transform(map_shapes[munic.province].transform);
-                           });
+                $.getJSON(filename, function (data) {
+                    $.each(data, function (i, munic) {
+                        attrs.fill = munic.color;
+                        sa[munic.name] = map_shapes[munic.province].paper.path(munic.path).attr(attrs);
+                        provinces.push(sa[munic.name]);
+                        sa[munic.name].name = munic.name;
+                        sa[munic.name].transform(map_shapes[munic.province].transform);
                     });
-                };
-			});
-		});
+                });
+            };
+        });
+    });
     // End Map Cod
 
     console.log("Try getting API data");
@@ -84,7 +84,7 @@ $(document).ready(function () {
             if (maintenance_len > length) {
                 length = maintenance_len
             }
-            if (balance_len > length){
+            if (balance_len > length) {
                 length = balance_len
             }
             if (cash_len > length) {
@@ -244,35 +244,24 @@ $(document).ready(function () {
         //Create a Crossfilter instance
         var ndx = crossfilter(records);
 
-        var categoryDim = ndx.dimension(function (d) { return d["category"]; });
-        var categoryGroup = categoryDim.group();
-        var charts_height = 150
-        dc.pieChart("#category-chart")
-            .width(200)
-            .height(charts_height)
-            .dimension(categoryDim)
-            .group(categoryGroup)
-            .legend(dc.legend().x(210).y(20))
-            .innerRadius(20);
-
-
         var contactDim = ndx.dimension(function (d) { return d["muni_official"]; });
         var contactGroup = contactDim.group();
         var filteredContactGroup = {
             all: function () {
                 return contactGroup.top(Infinity).filter(function (d) {
-                    //console.log("#####", d.key);
                     return d.key !== 'None';
                 });
             }
         }
 
-        var defectChart = dc.rowChart("#contact-chart");
-        defectChart.data(function (group) { return group.top(10); })
+        var charts_height = 200;
+
+        dc.rowChart("#contact-chart")
+            // .data(function (group) { return group.top(10); })
             .width(300)
             .height(390)
-            .dimension(locationDim)
-            .group(locationGroup)
+            .dimension(contactDim)
+            .group(filteredContactGroup)
             .ordering(function (d) { return -d.value })
             //.colors(['#6baed6'])
             .elasticX(true)
@@ -426,7 +415,7 @@ $(document).ready(function () {
             .group(filteredMaintenanceGroup) //auditsFYGroup)
             .controlsUseVisibility(true)
             .transitionDuration(500)
-            .x(d3.scale.ordinal().domain(["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016","2017","2018"]))
+            .x(d3.scale.ordinal().domain(["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"]))
             .xUnits(dc.units.ordinal)
             //.xAxisLabel("Year")
             //.yAxisLabel("Number of audits")

@@ -10,14 +10,15 @@ from app import serializers
 
 
 class GetBSData(generics.ListCreateAPIView):
-    queryset = models.BalanceSheet.objects.all()
+    queryset = models.BalanceSheet.objects.all()[:10]
     serializer_class = serializers.BSSerializer
 
+
 class GetMunisData(generics.ListCreateAPIView):
-    queryset = models.Municipalities.objects.all()
+    queryset = models.Municipalities.objects.all()[:10]
     serializer_class = serializers.MunicipalitySerializer
 
 
 class GetOfficials(generics.ListCreateAPIView):
-    queryset = models.Officials.objects.all()
+    queryset = models.Officials.objects.all()[:10]
     serializer_class = serializers.OfficialsSerializer
