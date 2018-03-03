@@ -246,22 +246,22 @@ $(document).ready(function () {
 
         var contactDim = ndx.dimension(function (d) { return d["muni_official"]; });
         var contactGroup = contactDim.group();
-        var filteredContactGroup = {
+        /*var filteredContactGroup = {
             all: function () {
                 return contactGroup.top(Infinity).filter(function (d) {
                     return d.key !== 'None';
                 });
             }
-        }
+        }*/
 
         var charts_height = 200;
 
         dc.rowChart("#contact-chart")
-            // .data(function (group) { return group.top(10); })
-            .width(300)
-            .height(390)
+            .data(function (group) { return group.top(5); })
+            .width(400)
+            .height(charts_height)
             .dimension(contactDim)
-            .group(filteredContactGroup)
+            .group(contactGroup)
             .ordering(function (d) { return -d.value })
             //.colors(['#6baed6'])
             .elasticX(true)
@@ -278,11 +278,11 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#income_expenditure-chart")
-            .width(250)
+            .width(300)
             .height(charts_height)
             //.margins({ top: 10, right: 50, bottom: 40, left: 40 })
             .dimension(incomeFYDim)
-            .group(filteredIncomeGroup) //auditsFYGroup)
+            .group(incomeFYGroup) //auditsFYGroup)
             .controlsUseVisibility(true)
             .transitionDuration(500)
             .x(d3.scale.ordinal().domain(["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"]))
@@ -290,7 +290,7 @@ $(document).ready(function () {
             //.xAxisLabel("Year")
             //.yAxisLabel("Number of audits")
             .barPadding(0.1)
-            .yAxis().ticks(5);
+            .yAxis().ticks(5).tickFormat(d3.format('.1s'));
 
 
         var capitalFYDim = ndx.dimension(function (d) { return d["capital_fy"]; });
