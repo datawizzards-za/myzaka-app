@@ -18,7 +18,7 @@ $(document).ready(function () {
                 st.node.onclick = function () {
                     paper.clear();
                     var filename = "../../static/data/" + st.name.toLowerCase().replace(" ", "") + ".json";
-                    var map_shapes = {
+                    var map_shapes =  {
                         "Gauteng": { "transform": "s6,6 0,0", "paper": Raphael(-2650, -700, 800, 2000) },
                         "Limpopo": { "transform": "s3,3 0,0", "paper": Raphael(-1100, 200, 3000, 2000) },
                         "Free State": { "transform": "s3,3 0,0", "paper": Raphael(-770, -500, 3000, 2000) },
