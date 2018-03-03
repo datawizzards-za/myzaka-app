@@ -1,51 +1,54 @@
 $(document).ready(function () {
     // Map Code
-    $.getJSON("../../static/data/map_data.json", function (data) {
-        var paper = Raphael(350, 160, 2000, 2000);
-        var elementSet = paper.set();
-        var attrs = { "type": "path", "stroke": "none" };
-        var sa = {}
+    function plotMap() {
+        $.getJSON("../../static/data/map_data.json", function (data) {
+            var paper = Raphael(350, 160, 800, 620);
+            var elementSet = paper.set();
+            var attrs = { "type": "path", "stroke": "none" };
+            var sa = {}
 
-        $.each(data, function (i, province) {
-            attrs.fill = province.color;
-            sa[province.name] = paper.path(province.path).attr(attrs);
-            sa[province.name].name = province.name;
-        });
+            $.each(data, function (i, province) {
+                attrs.fill = province.color;
+                sa[province.name] = paper.path(province.path).attr(attrs);
+                sa[province.name].name = province.name;
+            });
 
 
-        $.each(sa, function (i, st) {
-            st.node.onclick = function () {
-                paper.clear();
-                var filename = "../../static/data/" + st.name.toLowerCase().replace(" ", "") + ".json";
-                var map_shapes = {
-                    "Gauteng": { "transform": "s6,6 0,0", "paper": Raphael(-2650, -700, 4000, 2000) },
-                    "Limpopo": { "transform": "s3,3 0,0", "paper": Raphael(-1100, 200, 3000, 2000) },
-                    "Free State": { "transform": "s3,3 0,0", "paper": Raphael(-770, -500, 3000, 2000) },
-                    "Northern Cape": { "transform": "s1.5,1.5 0,0", "paper": Raphael(420, -30, 3000, 2000) },
-                    "Mpumalanga": { "transform": "s3.6,3.6 0,0", "paper": Raphael(-1650, -180, 3400, 2000) },
-                    "Western Cape": { "transform": "s2.5,2.5 0,0", "paper": Raphael(230, -850, 3000, 2000) },
-                    "KwaZulu Natal": { "transform": "s2.8,2.8 0,0", "paper": Raphael(-1200, -480, 3000, 2000) },
-                    "Eastern Cape": { "tranform": "s2,2 0,0", "paper": Raphael(300, 0, 3000, 2000) },
-                    "North West": { "transform": "s3,3 0,0", "paper": Raphael(-550, -180, 3000, 2000) }
-                }
+            $.each(sa, function (i, st) {
+                st.node.onclick = function () {
+                    paper.clear();
+                    var filename = "../../static/data/" + st.name.toLowerCase().replace(" ", "") + ".json";
+                    var map_shapes = {
+                        "Gauteng": { "transform": "s6,6 0,0", "paper": Raphael(-2650, -700, 800, 2000) },
+                        "Limpopo": { "transform": "s3,3 0,0", "paper": Raphael(-1100, 200, 3000, 2000) },
+                        "Free State": { "transform": "s3,3 0,0", "paper": Raphael(-770, -500, 3000, 2000) },
+                        "Northern Cape": { "transform": "s1.5,1.5 0,0", "paper": Raphael(420, -30, 3000, 2000) },
+                        "Mpumalanga": { "transform": "s3.6,3.6 0,0", "paper": Raphael(-1650, -180, 3400, 2000) },
+                        "Western Cape": { "transform": "s2.5,2.5 0,0", "paper": Raphael(230, -850, 3000, 2000) },
+                        "KwaZulu Natal": { "transform": "s2.8,2.8 0,0", "paper": Raphael(-1200, -480, 3000, 2000) },
+                        "Eastern Cape": { "tranform": "s2,2 0,0", "paper": Raphael(300, 0, 3000, 2000) },
+                        "North West": { "transform": "s3,3 0,0", "paper": Raphael(-550, -180, 3000, 2000) }
+                    }
 
-                var attrs = { "type": "path", "stroke": "none" };
-                var sa = {};
-                var provinces = map_shapes[st.name].paper.set();
+                    var attrs = { "type": "path", "stroke": "none" };
+                    var sa = {};
+                    var provinces = map_shapes[st.name].paper.set();
 
-                $.getJSON(filename, function (data) {
-                    $.each(data, function (i, munic) {
-                        attrs.fill = munic.color;
-                        sa[munic.name] = map_shapes[munic.province].paper.path(munic.path).attr(attrs);
-                        provinces.push(sa[munic.name]);
-                        sa[munic.name].name = munic.name;
-                        sa[munic.name].transform(map_shapes[munic.province].transform);
+                    $.getJSON(filename, function (data) {
+                        $.each(data, function (i, munic) {
+                            attrs.fill = munic.color;
+                            sa[munic.name] = map_shapes[munic.province].paper.path(munic.path).attr(attrs);
+                            provinces.push(sa[munic.name]);
+                            sa[munic.name].name = munic.name;
+                            sa[munic.name].transform(map_shapes[munic.province].transform);
+                        });
                     });
-                });
-            };
+                };
+            });
         });
-    });
+    }
     // End Map Cod
+    plotMap();
 
     console.log("Try getting API data");
     queue()
@@ -254,7 +257,7 @@ $(document).ready(function () {
             }
         }
 
-        var charts_height = 200;
+        var charts_height = 235;
 
         dc.rowChart("#contact-chart")
             // .data(function (group) { return group.top(10); })
@@ -278,7 +281,7 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#income_expenditure-chart")
-            .width(250)
+            .width(500)
             .height(charts_height)
             //.margins({ top: 10, right: 50, bottom: 40, left: 40 })
             .dimension(incomeFYDim)
@@ -290,7 +293,7 @@ $(document).ready(function () {
             //.xAxisLabel("Year")
             //.yAxisLabel("Number of audits")
             .barPadding(0.1)
-            .yAxis().ticks(5);
+            .yAxis().ticks(5).tickFormat(d3.format('.1s'));
 
 
         var capitalFYDim = ndx.dimension(function (d) { return d["capital_fy"]; });
@@ -304,7 +307,7 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#capital-chart")
-            .width(250)
+            .width(500)
             .height(charts_height)
             //.margins({ top: 10, right: 50, bottom: 40, left: 40 })
             .dimension(capitalFYDim)
@@ -330,7 +333,7 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#forecast-chart")
-            .width(250)
+            .width(500)
             .height(charts_height)
             //.margins({ top: 10, right: 50, bottom: 40, left: 40 })
             .dimension(forecastsFYDim)
@@ -356,7 +359,7 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#cash_flow-chart")
-            .width(250)
+            .width(500)
             .height(charts_height)
             //.margins({ top: 10, right: 50, bottom: 40, left: 40 })
             .dimension(cashFYDim)
@@ -382,7 +385,7 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#balance-chart")
-            .width(250)
+            .width(500)
             .height(charts_height)
             //.margins({ top: 10, right: 50, bottom: 40, left: 40 })
             .dimension(balanceFYDim)
@@ -408,7 +411,7 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#maintenance-chart")
-            .width(250)
+            .width(500)
             .height(charts_height)
             //.margins({ top: 10, right: 50, bottom: 40, left: 40 })
             .dimension(maintenanceFYDim)
@@ -434,7 +437,7 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#audits-chart")
-            .width(200)
+            .width(500)
             .height(charts_height)
             //.margins({ top: 10, right: 50, bottom: 40, left: 40 })
             .dimension(auditsFYDim)
@@ -460,7 +463,7 @@ $(document).ready(function () {
             }
         }
         dc.barChart("#wasteful-chart")
-            .width(170)
+            .width(500)
             .height(charts_height)
             .dimension(wastefulFYDim)
             .group(filteredWastefulGroup)
