@@ -1,0 +1,34 @@
+                      List of relations
+ Schema |               Name                | Type  | Owner  
+--------+-----------------------------------+-------+--------
+ public | app_audits                        | table | myzaka
+ public | app_balancesheet                  | table | myzaka
+ public | app_capital                       | table | myzaka
+ public | app_cashflow                      | table | myzaka
+ public | app_forecast                      | table | myzaka
+ public | app_incomeexpense                 | table | myzaka
+ public | app_maintenance                   | table | myzaka
+ public | app_municipalities                | table | myzaka
+ public | app_municipalities_audits         | table | myzaka
+ public | app_municipalities_balance_sheets | table | myzaka
+ public | app_municipalities_capital        | table | myzaka
+ public | app_municipalities_cash_flows     | table | myzaka
+ public | app_municipalities_forecasts      | table | myzaka
+ public | app_municipalities_income_expense | table | myzaka
+ public | app_municipalities_maintenance    | table | myzaka
+ public | app_municipalities_officials      | table | myzaka
+ public | app_municipalities_wasteful       | table | myzaka
+ public | app_officials                     | table | myzaka
+ public | app_wastefulexpenditure           | table | myzaka
+ public | auth_group                        | table | myzaka
+ public | auth_group_permissions            | table | myzaka
+ public | auth_permission                   | table | myzaka
+ public | auth_user                         | table | myzaka
+ public | auth_user_groups                  | table | myzaka
+ public | auth_user_user_permissions        | table | myzaka
+ public | django_admin_log                  | table | myzaka
+ public | django_content_type               | table | myzaka
+ public | django_migrations                 | table | myzaka
+ public | django_session                    | table | myzaka
+(29 rows)
+
